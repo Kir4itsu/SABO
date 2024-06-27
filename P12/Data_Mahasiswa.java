@@ -19,6 +19,13 @@ public class Data_Mahasiswa extends javax.swing.JFrame {
         initComponents();
         connect();
         load_table();
+        
+        // Tambahkan listener untuk JComboBox Fakultas
+        jComboBoxFakultas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxFakultasActionPerformed(evt);
+            }
+        });
     }
 
     private void connect() {
@@ -36,6 +43,7 @@ public class Data_Mahasiswa extends javax.swing.JFrame {
         model.addColumn("No");
         model.addColumn("Nama");
         model.addColumn("NIM");
+        model.addColumn("Universitas");
         model.addColumn("Fakultas");
         model.addColumn("Jurusan");
         model.addColumn("Peminatan");
@@ -50,6 +58,7 @@ public class Data_Mahasiswa extends javax.swing.JFrame {
                     no++,
                     rs.getString("Nama"),
                     rs.getString("NIM"),
+                    rs.getString("Universitas"),
                     rs.getString("Fakultas"),
                     rs.getString("Jurusan"),
                     rs.getString("Peminatan"),
@@ -66,8 +75,9 @@ public class Data_Mahasiswa extends javax.swing.JFrame {
     private void clear() {
         jTextFieldNama.setText("");
         jTextFieldNIM.setText("");
+        jTextFieldUniversitas.setText("");
         jComboBoxFakultas.setSelectedIndex(0);
-        jTextFieldJurusan.setSelectedIndex(0);
+        jComboBoxJurusan.setSelectedIndex(0);
         jComboBoxPeminatan.setSelectedIndex(0);
         jTextFieldAlamat.setText("");
         jTextFieldPhone.setText("");
@@ -81,7 +91,10 @@ public class Data_Mahasiswa extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jTextFieldNama = new javax.swing.JTextField();
         jTextFieldNIM = new javax.swing.JTextField();
-        jTextFieldJurusan = new javax.swing.JComboBox<>();
+        jTextFieldUniversitas = new javax.swing.JTextField();
+        jComboBoxFakultas = new javax.swing.JComboBox<>();
+        jComboBoxJurusan = new javax.swing.JComboBox<>();
+        jComboBoxPeminatan = new javax.swing.JComboBox<>();
         jTextFieldAlamat = new javax.swing.JTextField();
         jTextFieldPhone = new javax.swing.JTextField();
         jButtonTambah = new javax.swing.JButton();
@@ -90,15 +103,16 @@ public class Data_Mahasiswa extends javax.swing.JFrame {
         jButtonClear = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jLabelUniversitas = new javax.swing.JLabel();
         jLabelFakultas = new javax.swing.JLabel();
         jLabelPeminatan = new javax.swing.JLabel();
-        jComboBoxFakultas = new javax.swing.JComboBox<>();
-        jComboBoxPeminatan = new javax.swing.JComboBox<>();
 
+        jLabelUniversitas.setText("Universitas");
         jLabelFakultas.setText("Fakultas");
         jLabelPeminatan.setText("Peminatan");
 
         jComboBoxFakultas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--", "Fakultas Teknik", "Fakultas Ekonomi", "Fakultas Hukum" }));
+        jComboBoxJurusan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--" }));
         jComboBoxPeminatan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--", "Peminatan 1", "Peminatan 2", "Peminatan 3" }));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -108,8 +122,6 @@ public class Data_Mahasiswa extends javax.swing.JFrame {
         jLabel3.setText("Jurusan");
         jLabel4.setText("Alamat");
         jLabel5.setText("No Handphone");
-
-        jTextFieldJurusan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--", "Teknik Informatika", "Teknik Sipil", "Teknik Elektro", "Teknik Mesin" }));
 
         jButtonTambah.setText("Tambah");
         jButtonTambah.addActionListener(new java.awt.event.ActionListener() {
@@ -160,6 +172,7 @@ public class Data_Mahasiswa extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel1)
                         .addComponent(jLabel2)
+                        .addComponent(jLabelUniversitas)
                         .addComponent(jLabelFakultas)
                         .addComponent(jLabel3)
                         .addComponent(jLabelPeminatan)
@@ -169,8 +182,9 @@ public class Data_Mahasiswa extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jTextFieldNama)
                         .addComponent(jTextFieldNIM)
+                        .addComponent(jTextFieldUniversitas)
                         .addComponent(jComboBoxFakultas)
-                        .addComponent(jTextFieldJurusan)
+                        .addComponent(jComboBoxJurusan)
                         .addComponent(jComboBoxPeminatan)
                         .addComponent(jTextFieldAlamat)
                         .addComponent(jTextFieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -181,7 +195,7 @@ public class Data_Mahasiswa extends javax.swing.JFrame {
                         .addComponent(jButtonHapus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonClear, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addContainerGap(30, Short.MAX_VALUE))
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
         );
 
         layout.setVerticalGroup(
@@ -199,13 +213,18 @@ public class Data_Mahasiswa extends javax.swing.JFrame {
                         .addComponent(jButtonEdit))
                     .addGap(18, 18, 18)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabelUniversitas)
+                        .addComponent(jTextFieldUniversitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonHapus))
+                    .addGap(18, 18, 18)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabelFakultas)
-                        .addComponent(jComboBoxFakultas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jComboBoxFakultas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonClear))
                     .addGap(18, 18, 18)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3)
-                        .addComponent(jTextFieldJurusan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButtonHapus))
+                        .addComponent(jComboBoxJurusan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(18, 18, 18)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabelPeminatan)
@@ -213,66 +232,71 @@ public class Data_Mahasiswa extends javax.swing.JFrame {
                     .addGap(18, 18, 18)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
-                        .addComponent(jTextFieldAlamat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButtonClear))
+                        .addComponent(jTextFieldAlamat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(18, 18, 18)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
                         .addComponent(jTextFieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(30, 30, 30)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
     }
 
-    private void jButtonTambahActionPerformed(java.awt.event.ActionEvent evt) {
-        if (jComboBoxFakultas.getSelectedItem().equals("--") || jTextFieldJurusan.getSelectedItem().equals("--") || jComboBoxPeminatan.getSelectedItem().equals("--")) {
-            JOptionPane.showMessageDialog(this, "Pilih Fakultas, Jurusan, dan Peminatan terlebih dahulu!");
-        } else {
-            try {
-                String sql = "INSERT INTO table_mhs (Nama, NIM, Fakultas, Jurusan, Peminatan, Alamat, Phone) VALUES ('"
-                        + jTextFieldNama.getText() + "','"
-                        + jTextFieldNIM.getText() + "','"
-                        + jComboBoxFakultas.getSelectedItem() + "','"
-                        + jTextFieldJurusan.getSelectedItem() + "','"
-                        + jComboBoxPeminatan.getSelectedItem() + "','"
-                        + jTextFieldAlamat.getText() + "','"
-                        + jTextFieldPhone.getText() + "')";
-                stmt.executeUpdate(sql);
-                JOptionPane.showMessageDialog(this, "Data berhasil ditambahkan");
-                load_table();
-                clear();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, e.getMessage());
+        private void jButtonTambahActionPerformed(java.awt.event.ActionEvent evt) {
+            // Validasi input sebelum menambahkan data
+            if (isInputValid()) {
+                try {
+                    stmt.executeUpdate("INSERT INTO table_mhs (Nama, NIM, Universitas, Fakultas, Jurusan, Peminatan, Alamat, Phone) VALUES ('" +
+                        jTextFieldNama.getText() + "','" +
+                        jTextFieldNIM.getText() + "','" +
+                        jTextFieldUniversitas.getText() + "','" +
+                        jComboBoxFakultas.getSelectedItem() + "','" +
+                        jComboBoxJurusan.getSelectedItem() + "','" +
+                        jComboBoxPeminatan.getSelectedItem() + "','" +
+                        jTextFieldAlamat.getText() + "','" +
+                        jTextFieldPhone.getText() + "')");
+                    JOptionPane.showMessageDialog(this, "Data berhasil ditambahkan");
+                    load_table();
+                    clear();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, e.getMessage());
+                }
             }
         }
-    }
-
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {
-        int row = jTable1.getSelectedRow();
-        jTextFieldNama.setText(jTable1.getModel().getValueAt(row, 1).toString());
-        jTextFieldNIM.setText(jTable1.getModel().getValueAt(row, 2).toString());
-        jComboBoxFakultas.setSelectedItem(jTable1.getModel().getValueAt(row, 3).toString());
-        jTextFieldJurusan.setSelectedItem(jTable1.getModel().getValueAt(row, 4).toString());
-        jComboBoxPeminatan.setSelectedItem(jTable1.getModel().getValueAt(row, 5).toString());
-        jTextFieldAlamat.setText(jTable1.getModel().getValueAt(row, 6).toString());
-        jTextFieldPhone.setText(jTable1.getModel().getValueAt(row, 7).toString());
-    }
+        
+        private boolean isInputValid() {
+            // Validasi bahwa semua field yang penting sudah diisi
+            if (jTextFieldNama.getText().isEmpty() || 
+                jTextFieldNIM.getText().isEmpty() || 
+                jTextFieldUniversitas.getText().isEmpty() ||
+                jComboBoxFakultas.getSelectedItem().equals("--") ||
+                jComboBoxJurusan.getSelectedItem().equals("--") ||
+                jComboBoxPeminatan.getSelectedItem().equals("--") ||
+                jTextFieldAlamat.getText().isEmpty() ||
+                jTextFieldPhone.getText().isEmpty()) {
+                
+                JOptionPane.showMessageDialog(this, "Harap lengkapi semua kolom yang dibutuhkan.");
+                return false;
+            }
+            return true;
+        }
+        
+    
 
     private void jButtonEditActionPerformed(java.awt.event.ActionEvent evt) {
         try {
-            String sql = "UPDATE table_mhs SET Nama='"
-                    + jTextFieldNama.getText() + "', NIM='"
-                    + jTextFieldNIM.getText() + "', Fakultas='"
-                    + jComboBoxFakultas.getSelectedItem() + "', Jurusan='"
-                    + jTextFieldJurusan.getSelectedItem() + "', Peminatan='"
-                    + jComboBoxPeminatan.getSelectedItem() + "', Alamat='"
-                    + jTextFieldAlamat.getText() + "', Phone='"
-                    + jTextFieldPhone.getText() + "' WHERE NIM='"
-                    + jTextFieldNIM.getText() + "'";
-            stmt.executeUpdate(sql);
-            JOptionPane.showMessageDialog(this, "Data berhasil diubah");
+            stmt.executeUpdate("UPDATE table_mhs SET " +
+                "Nama='" + jTextFieldNama.getText() + "', " +
+                "Universitas='" + jTextFieldUniversitas.getText() + "', " +
+                "Fakultas='" + jComboBoxFakultas.getSelectedItem() + "', " +
+                "Jurusan='" + jComboBoxJurusan.getSelectedItem() + "', " +
+                "Peminatan='" + jComboBoxPeminatan.getSelectedItem() + "', " +
+                "Alamat='" + jTextFieldAlamat.getText() + "', " +
+                "Phone='" + jTextFieldPhone.getText() + "' " +
+                "WHERE NIM='" + jTextFieldNIM.getText() + "'");
             load_table();
             clear();
         } catch (Exception e) {
@@ -282,14 +306,7 @@ public class Data_Mahasiswa extends javax.swing.JFrame {
 
     private void jButtonHapusActionPerformed(java.awt.event.ActionEvent evt) {
         try {
-            String nim = jTextFieldNIM.getText();
-            if (nim.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "NIM tidak boleh kosong");
-                return;
-            }
-            String sql = "DELETE FROM table_mhs WHERE NIM='" + nim + "'";
-            stmt.executeUpdate(sql);
-            JOptionPane.showMessageDialog(this, "Data berhasil dihapus");
+            stmt.executeUpdate("DELETE FROM table_mhs WHERE NIM='" + jTextFieldNIM.getText() + "'");
             load_table();
             clear();
         } catch (Exception e) {
@@ -299,6 +316,43 @@ public class Data_Mahasiswa extends javax.swing.JFrame {
 
     private void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {
         clear();
+    }
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {
+        int row = jTable1.getSelectedRow();
+        jTextFieldNama.setText(jTable1.getValueAt(row, 1).toString());
+        jTextFieldNIM.setText(jTable1.getValueAt(row, 2).toString());
+        jTextFieldUniversitas.setText(jTable1.getValueAt(row, 3).toString());
+        jComboBoxFakultas.setSelectedItem(jTable1.getValueAt(row, 4).toString());
+        jComboBoxJurusan.setSelectedItem(jTable1.getValueAt(row, 5).toString());
+        jComboBoxPeminatan.setSelectedItem(jTable1.getValueAt(row, 6).toString());
+        jTextFieldAlamat.setText(jTable1.getValueAt(row, 7).toString());
+        jTextFieldPhone.setText(jTable1.getValueAt(row, 8).toString());
+    }
+
+    private void jComboBoxFakultasActionPerformed(java.awt.event.ActionEvent evt) {
+        // Ambil nilai yang dipilih dari JComboBox Fakultas
+        String selectedFakultas = (String) jComboBoxFakultas.getSelectedItem();
+        
+        // Bersihkan terlebih dahulu model JComboBox Jurusan
+        jComboBoxJurusan.removeAllItems();
+        
+        // Tambahkan pilihan jurusan sesuai dengan fakultas yang dipilih
+        if (selectedFakultas.equals("Fakultas Teknik")) {
+            jComboBoxJurusan.addItem("Teknik Informatika");
+            jComboBoxJurusan.addItem("Teknik Industri");
+            jComboBoxJurusan.addItem("Teknik Sipil");
+        } else if (selectedFakultas.equals("Fakultas Ekonomi")) {
+            jComboBoxJurusan.addItem("Manajemen");
+            jComboBoxJurusan.addItem("Akuntansi");
+            jComboBoxJurusan.addItem("Ekonomi Pembangunan");
+        } else if (selectedFakultas.equals("Fakultas Hukum")) {
+            jComboBoxJurusan.addItem("Hukum Bisnis");
+            jComboBoxJurusan.addItem("Hukum Pidana");
+            jComboBoxJurusan.addItem("Hukum Internasional");
+        } else {
+            jComboBoxJurusan.addItem("--");
+        }
     }
 
     public static void main(String args[]) {
@@ -313,20 +367,22 @@ public class Data_Mahasiswa extends javax.swing.JFrame {
     private javax.swing.JButton jButtonEdit;
     private javax.swing.JButton jButtonHapus;
     private javax.swing.JButton jButtonClear;
+    private javax.swing.JComboBox<String> jComboBoxFakultas;
+    private javax.swing.JComboBox<String> jComboBoxJurusan;
+    private javax.swing.JComboBox<String> jComboBoxPeminatan;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabelUniversitas;
+    private javax.swing.JLabel jLabelFakultas;
+    private javax.swing.JLabel jLabelPeminatan;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextFieldNama;
     private javax.swing.JTextField jTextFieldNIM;
-    private javax.swing.JComboBox<String> jTextFieldJurusan;
+    private javax.swing.JTextField jTextFieldUniversitas;
     private javax.swing.JTextField jTextFieldAlamat;
     private javax.swing.JTextField jTextFieldPhone;
-    private javax.swing.JLabel jLabelFakultas;
-    private javax.swing.JLabel jLabelPeminatan;
-    private javax.swing.JComboBox<String> jComboBoxFakultas;
-    private javax.swing.JComboBox<String> jComboBoxPeminatan;
 }
